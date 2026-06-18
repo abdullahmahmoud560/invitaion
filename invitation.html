@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abdelrahman & Nada • Wedding Invitation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@500;600;700&family=Montserrat:wght@400;500&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f0c1b;
+            --envelope-beige: #f5f2eb;
+            --ribbon-pink: #ffb6c1;
+            --gold: #d4af37;
+            --ivory: #fdfbf7;
+            --ink: #3b2e27;
+            --rose-red: #c81d3f;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            min-height: 100%;
+        }
+
+        body {
+            position: relative;
+            overflow: hidden;
+            font-family: 'Montserrat', 'Tajawal', sans-serif;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image: url('images (2).jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: blur(0.1rem);
+            transform: scale(1.02);
+        }
+
+        /* Background red rose petals */
+        .petal-field {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .red-petal {
+            position: absolute;
+            width: var(--size);
+            height: calc(var(--size) * 1.2);
+            top: -10vh;
+            left: var(--x);
+            opacity: 0;
+            transform: translate3d(0, -10vh, 0) rotate(0deg) rotateY(0deg);
+            transform-style: preserve-3d;
+            will-change: transform, opacity;
+            animation: red-petal-fall var(--duration) linear forwards;
+            z-index: 1;
+        }
+
+        .red-petal::before,
+        .red-petal::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 70% 15% 70% 20%;
+        }
+
+        .red-petal::before {
+            background:
+                radial-gradient(circle at 36% 30%, rgba(255, 201, 206, 0.82), transparent 28%),
+                linear-gradient(145deg, #c81d3f 0%, #a51030 48%, #7d071a 100%);
+            box-shadow:
+                inset -3px -6px 8px rgba(88, 6, 18, 0.35),
+                0 6px 10px rgba(51, 4, 11, 0.18);
+        }
+
+        .red-petal::after {
+            inset: 18% 12% 24% 18%;
+            background: linear-gradient(180deg, rgba(255, 240, 240, 0.42), rgba(255, 255, 255, 0));
+            opacity: 0.55;
+            transform: rotate(18deg);
+        }
+        
+        .big-rose-petal {
+            position: absolute;
+            width: var(--size);
+            height: calc(var(--size) * 1.15);
+            top: -15vh;
+            left: var(--x);
+            opacity: 0;
+            transform: translate3d(0, -15vh, 0) rotate(0deg) rotateY(0deg) scale(0.9);
+            transform-style: preserve-3d;
+            will-change: transform, opacity;
+            animation: big-rose-fall var(--duration) ease-in forwards;
+        }
+        
+        .big-rose-petal::before,
+        .big-rose-petal::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 60% 10% 65% 15%;
+        }
+        
+        .big-rose-petal::before {
+            background:
+                radial-gradient(circle at 30% 28%, rgba(255, 215, 220, 0.9), transparent 32%),
+                linear-gradient(135deg, #d6284f 0%, #a81539 45%, #7a0a27 100%);
+            box-shadow:
+                inset -4px -8px 12px rgba(70, 5, 20, 0.35),
+                0 10px 20px rgba(40, 3, 12, 0.35);
+        }
+        
+        .big-rose-petal::after {
+            inset: 22% 16% 28% 22%;
+            background: linear-gradient(180deg, rgba(255, 245, 245, 0.55), rgba(255, 255, 255, 0));
+            opacity: 0.6;
+            transform: rotate(22deg);
+        }
+
+        .stage {
+            position: relative;
+            min-height: 100vh;
+            width: 100%;
+            display: grid;
+            place-items: center;
+            padding: 2rem 1.25rem;
+            z-index: 2;
+            isolation: isolate;
+        }
+
+        .center-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            max-width: 600px;
+            aspect-ratio: 1 / 1;
+            display: grid;
+            place-items: center;
+        }
+
+        /* Envelope - simple rectangle */
+        .envelope {
+            position: absolute;
+            inset: 0;
+            margin: auto;
+            width: min(90vw, 520px);
+            height: 340px;
+            background-color: var(--envelope-beige);
+            border-radius: 12px;
+            cursor: pointer;
+            z-index: 4;
+            box-shadow:
+                0 0 0 2px var(--gold),
+                0 0 12px var(--gold),
+                0 24px 50px rgba(0,0,0,0.6);
+            transition: opacity 0.6s ease, filter 0.6s ease, transform 0.6s ease;
+        }
+
+        .envelope:focus-visible {
+            outline: 2px solid rgba(212, 175, 55, 0.85);
+            outline-offset: 0.75rem;
+        }
+
+        .envelope-initials {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: 'Great Vibes', cursive;
+            font-weight: 400;
+            font-size: clamp(3.8rem, 8.5vw, 6rem);
+            text-transform: uppercase;
+            color: var(--ribbon-pink);
+            z-index: 5;
+            text-shadow: 
+                0 0 12px rgba(255, 182, 193, 0.7),
+                0 0 24px rgba(255, 150, 170, 0.5),
+                0 3px 6px rgba(0,0,0,0.15);
+            animation: letter-shimmer 3s ease-in-out infinite alternate;
+        }
+        
+        .envelope-initials::before,
+        .envelope-initials::after {
+            content: "✦";
+            position: absolute;
+            font-size: 1.4rem;
+            color: #f59eaa;
+            text-shadow: 0 0 8px rgba(245, 158, 170, 0.8);
+        }
+        
+        .envelope-initials.n::before {
+            left: -35px;
+            top: 10px;
+            transform: rotate(-20deg);
+        }
+        
+        .envelope-initials.n::after {
+            right: -35px;
+            bottom: 10px;
+            transform: rotate(25deg);
+        }
+        
+        .envelope-initials.a::before {
+            left: -35px;
+            bottom: 10px;
+            transform: rotate(-25deg);
+        }
+        
+        .envelope-initials.a::after {
+            right: -35px;
+            top: 10px;
+            transform: rotate(20deg);
+        }
+        
+        .envelope-initials.n {
+            left: 55px;
+        }
+        
+        .envelope-initials.a {
+            right: 55px;
+        }
+
+        /* Vertical Ribbon */
+        .ribbon-wrapper {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: calc(100% + 40px);
+            z-index: 10;
+            pointer-events: none;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s ease;
+        }
+
+        .ribbon-vertical {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 100%;
+            background-color: var(--ribbon-pink);
+            box-shadow:
+                0 2px 8px rgba(0,0,0,0.2),
+                inset 0 0 0 1px rgba(255,255,255,0.3);
+        }
+
+        .ribbon-bow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .bow-loop {
+            position: absolute;
+            width: 50px;
+            height: 38px;
+            background-color: var(--ribbon-pink);
+            border-radius: 50% 50% 45% 45%;
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,0.3),
+                0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .bow-loop.left {
+            right: 100%;
+            margin-right: -8px;
+            transform: rotate(-15deg);
+        }
+
+        .bow-loop.right {
+            left: 100%;
+            margin-left: -8px;
+            transform: rotate(15deg);
+        }
+
+        .bow-knot {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 22px;
+            height: 28px;
+            background-color: #f59eaa;
+            border-radius: 4px;
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,0.3),
+                0 2px 8px rgba(0,0,0,0.25);
+        }
+
+        .envelope-hint {
+            position: absolute;
+            bottom: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 8;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            color: rgba(139, 90, 43, 0.9);
+            transition: opacity 0.4s ease;
+            animation: pulse 2.2s ease-in-out infinite;
+            white-space: nowrap;
+        }
+
+        /* Wedding Card */
+        .card {
+            position: absolute;
+            inset: 0;
+            margin: auto;
+            width: min(95vw, 650px);
+            height: 420px;
+            border-radius: 12px;
+            background-color: var(--ivory);
+            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.55);
+            border: 1px solid rgba(137, 98, 51, 0.25);
+            opacity: 0;
+            transform: translateY(40px) scale(0.9);
+            z-index: 3;
+            overflow: hidden;
+            transition: opacity 0.9s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .card-inner {
+            position: relative;
+            padding: 2.8rem 2rem 2.2rem;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: center;
+        }
+
+        .card-inner::before,
+        .card-inner::after {
+            content: "";
+            position: absolute;
+            border: 1px solid rgba(137, 98, 51, 0.25);
+            border-radius: 8px;
+            pointer-events: none;
+        }
+
+        .card-inner::before {
+            inset: 0.85rem;
+        }
+
+        .card-inner::after {
+            inset: 1.35rem;
+            border: 1px solid rgba(137, 98, 51, 0.15);
+            border-radius: 6px;
+        }
+
+        .eyebrow {
+            text-transform: uppercase;
+            letter-spacing: 0.38em;
+            font-size: 0.68rem;
+            font-weight: 500;
+            color: #9f7a45;
+            margin-bottom: 1rem;
+        }
+
+        .names {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(2.25rem, 5vw, 3.75rem);
+            color: var(--ink);
+            line-height: 0.95;
+        }
+
+        .ampersand {
+            display: block;
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            font-size: clamp(0.9rem, 2.1vw, 1.3rem);
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: #a8824d;
+            margin: 0.6rem 0;
+        }
+
+        .message {
+            margin: 1.3rem 0;
+            font-family: 'Playfair Display', serif;
+            color: #66534b;
+            font-size: 0.96rem;
+            line-height: 1.75;
+        }
+
+        .date-location {
+            padding-top: 1rem;
+        }
+
+        .date {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--ink);
+            margin-bottom: 0.5rem;
+        }
+
+        .time-location {
+            font-size: 0.88rem;
+            color: #7a6e63;
+            line-height: 1.6;
+        }
+
+        /* Candle flames */
+        .candles-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 16px;
+            margin-top: auto;
+            width: 100%;
+            height: 55px;
+        }
+
+        .candle {
+            position: relative;
+            width: 12px;
+            border-radius: 4px 4px 3px 3px;
+            background: linear-gradient(180deg, #fff9ee 0%, #ebdbc3 46%, #d8c5a9 100%);
+            box-shadow: inset 0 0 0 1px rgba(118, 84, 47, 0.12);
+        }
+
+        .candle:nth-child(1) { height: 40px; }
+        .candle:nth-child(2) { height: 52px; }
+        .candle:nth-child(3) { height: 44px; }
+
+        .wick {
+            position: absolute;
+            top: -7px;
+            left: 50%;
+            width: 1.5px;
+            height: 7px;
+            transform: translateX(-50%);
+            background: #4a3321;
+        }
+
+        .flame {
+            position: absolute;
+            left: 50%;
+            top: -20px;
+            width: 12px;
+            height: 20px;
+            transform: translateX(-50%);
+            border-radius: 50% 50% 42% 42%;
+            background:
+                radial-gradient(circle at 50% 68%, #fff6ca 0 19%, #ffcb6f 20%, #ff8a1d 52%, rgba(255, 92, 0, 0.95) 72%, rgba(255, 92, 0, 0) 100%);
+            filter: drop-shadow(0 0 8px rgba(255, 157, 43, 0.65));
+            transform-origin: center bottom;
+            animation: flame-flicker 1.6s ease-in-out infinite alternate;
+        }
+
+        .flame::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 5px;
+            width: 5px;
+            height: 8px;
+            transform: translateX(-50%);
+            border-radius: 50%;
+            background: radial-gradient(circle at center, #fff9df 0, #ffe6a9 60%, rgba(255, 230, 169, 0) 100%);
+        }
+
+        /* Animation keyframes */
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes red-petal-fall {
+            0% {
+                opacity: 0;
+                transform: translate3d(0, -14vh, 0) rotate(0deg) rotateY(0deg) scale(0.9);
+            }
+            8% {
+                opacity: 0.96;
+            }
+            50% {
+                opacity: 0.98;
+            }
+            100% {
+                opacity: 0;
+                transform:
+                    translate3d(var(--drift), 118vh, 0)
+                    rotate(var(--spin))
+                    rotateY(var(--tilt))
+                    scale(1.04);
+            }
+        }
+        
+        @keyframes big-rose-fall {
+            0% {
+                opacity: 0;
+                transform: translate3d(0, -15vh, 0) rotate(0deg) rotateY(0deg) scale(0.9);
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform:
+                    translate3d(var(--drift), 125vh, 0)
+                    rotate(var(--spin))
+                    rotateY(var(--tilt))
+                    scale(1.15);
+            }
+        }
+        
+        @keyframes letter-shimmer {
+            0% {
+                text-shadow: 
+                    0 0 10px rgba(255, 182, 193, 0.6),
+                    0 0 20px rgba(255, 150, 170, 0.4),
+                    0 3px 6px rgba(0,0,0,0.15);
+                transform: translateY(-50%) scale(1);
+            }
+            50% {
+                text-shadow: 
+                    0 0 18px rgba(255, 200, 210, 0.9),
+                    0 0 30px rgba(255, 170, 190, 0.6),
+                    0 0 45px rgba(245, 158, 170, 0.4),
+                    0 3px 6px rgba(0,0,0,0.15);
+                transform: translateY(-50%) scale(1.03);
+            }
+            100% {
+                text-shadow: 
+                    0 0 14px rgba(255, 190, 200, 0.7),
+                    0 0 26px rgba(255, 160, 180, 0.5),
+                    0 3px 6px rgba(0,0,0,0.15);
+                transform: translateY(-50%) scale(1);
+            }
+        }
+
+        @keyframes flame-flicker {
+            0% {
+                transform: translateX(-50%) scale(0.94, 1.02) skewX(-4deg) rotate(-2deg);
+                filter: drop-shadow(0 0 8px rgba(255, 157, 43, 0.65));
+            }
+            50% {
+                transform: translateX(-50%) scale(1.08, 0.98) skewX(3deg) rotate(2deg);
+                filter: drop-shadow(0 0 11px rgba(255, 172, 62, 0.78));
+            }
+            100% {
+                transform: translateX(-50%) scale(0.98, 1.08) skewX(-2deg) rotate(-1deg);
+                filter: drop-shadow(0 0 14px rgba(255, 125, 18, 0.85));
+            }
+        }
+
+        /* Trigger states */
+        .ribbon-wrapper.slide-out {
+            transform: translateX(-50%) translateY(-120%);
+            opacity: 0;
+        }
+
+        .envelope.disintegrate {
+            opacity: 0;
+            filter: blur(10px);
+            transform: scale(1.05) translateY(-20px);
+        }
+
+        .envelope.disintegrate .envelope-hint {
+            opacity: 0;
+        }
+
+        .card.reveal {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            z-index: 12;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .center-container {
+                max-width: 92vw;
+            }
+            .card-inner {
+                padding: 2.3rem 1.7rem 2rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="petal-field" id="redPetalField" aria-hidden="true"></div>
+    <div class="petal-field" id="bigRosePetalField" aria-hidden="true" style="z-index: 2;"></div>
+
+    <main class="stage">
+        <section class="center-container" aria-label="Wedding invitation">
+            <!-- Wedding Card -->
+            <article class="card" id="weddingCard" aria-label="Invitation card">
+                <div class="card-inner">
+                    <p class="eyebrow">Wedding Invitation</p>
+                    <div class="names">
+                        Abdelrahman
+                        <span class="ampersand">&amp;</span>
+                        Nada
+                    </div>
+                    <div class="message">
+                        Together with their families,<br>
+                        request the pleasure of your company<br>
+                        as they celebrate their wedding day.
+                    </div>
+                    <div class="date-location">
+                        <span class="date">August 24, 2026</span>
+                        <span class="time-location">The Royal Palace Hall</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Envelope -->
+            <div class="envelope" id="invitationEnvelope" role="button" tabindex="0" aria-expanded="false" aria-label="Open wedding invitation">
+                <div class="envelope-initials n">N</div>
+                <div class="envelope-initials a">A</div>
+                
+                <!-- Vertical Ribbon -->
+                <div class="ribbon-wrapper" id="ribbonWrapper" aria-hidden="true">
+                    <div class="ribbon-vertical"></div>
+                    <div class="ribbon-bow">
+                        <div class="bow-loop left"></div>
+                        <div class="bow-loop right"></div>
+                        <div class="bow-knot"></div>
+                    </div>
+                </div>
+                
+                <div class="envelope-hint">Tap To Open</div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        (function () {
+            const envelope = document.getElementById("invitationEnvelope");
+            const weddingCard = document.getElementById("weddingCard");
+            const ribbonWrapper = document.getElementById("ribbonWrapper");
+            const redPetalField = document.getElementById("redPetalField");
+            const bigRosePetalField = document.getElementById("bigRosePetalField");
+            const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+            let isOpened = false;
+            let redPetalRafId = 0;
+            let lastRedPetalSpawn = 0;
+            const redPetalSpawnInterval = 75;
+            const redPetalSpawnCount = reducedMotion.matches ? 1 : 2;
+            let bigRosePetalRafId = 0;
+            let lastBigRosePetalSpawn = 0;
+
+            // Utility functions
+            function randomBetween(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            // Red rose petal system (background)
+            function createRedPetal() {
+                const petal = document.createElement("span");
+                petal.className = "red-petal";
+
+                const size = randomBetween(10, 22);
+                const duration = randomBetween(5.2, 9);
+                const drift = randomBetween(-18, 18) + "vw";
+                const spin = randomBetween(320, 980) + "deg";
+                const tilt = randomBetween(140, 640) + "deg";
+                const left = randomBetween(-4, 100) + "vw";
+
+                petal.style.setProperty("--size", size + "px");
+                petal.style.setProperty("--duration", duration + "s");
+                petal.style.setProperty("--drift", drift);
+                petal.style.setProperty("--spin", spin);
+                petal.style.setProperty("--tilt", tilt);
+                petal.style.setProperty("--x", left);
+
+                redPetalField.appendChild(petal);
+                petal.addEventListener("animationend", () => petal.remove(), { once: true });
+            }
+
+            function redPetalLoop(timestamp) {
+                if (!lastRedPetalSpawn) {
+                    lastRedPetalSpawn = timestamp;
+                }
+
+                if (timestamp - lastRedPetalSpawn >= redPetalSpawnInterval) {
+                    for (let i = 0; i < redPetalSpawnCount; i++) {
+                        createRedPetal();
+                    }
+                    lastRedPetalSpawn = timestamp;
+                }
+                redPetalRafId = requestAnimationFrame(redPetalLoop);
+            }
+            
+            // Big rose petal system (for when envelope opens)
+            function createBigRosePetal() {
+                const petal = document.createElement("span");
+                petal.className = "big-rose-petal";
+
+                const size = randomBetween(45, 75);
+                const duration = randomBetween(3.5, 6.5);
+                const drift = randomBetween(-35, 35) + "vw";
+                const spin = randomBetween(420, 1200) + "deg";
+                const tilt = randomBetween(220, 860) + "deg";
+                const left = randomBetween(-10, 110) + "vw";
+
+                petal.style.setProperty("--size", size + "px");
+                petal.style.setProperty("--duration", duration + "s");
+                petal.style.setProperty("--drift", drift);
+                petal.style.setProperty("--spin", spin);
+                petal.style.setProperty("--tilt", tilt);
+                petal.style.setProperty("--x", left);
+
+                bigRosePetalField.appendChild(petal);
+                petal.addEventListener("animationend", () => petal.remove(), { once: true });
+            }
+            
+            function bigRosePetalLoop(timestamp) {
+                if (!lastBigRosePetalSpawn) {
+                    lastBigRosePetalSpawn = timestamp;
+                }
+
+                if (timestamp - lastBigRosePetalSpawn >= 60) {
+                    for (let i = 0; i < 3; i++) {
+                        createBigRosePetal();
+                    }
+                    lastBigRosePetalSpawn = timestamp;
+                }
+                bigRosePetalRafId = requestAnimationFrame(bigRosePetalLoop);
+            }
+
+            // Opening sequence
+            function openInvitation() {
+                if (isOpened) return;
+
+                isOpened = true;
+                envelope.setAttribute("aria-expanded", "true");
+
+                if (reducedMotion.matches) {
+                    ribbonWrapper.remove();
+                    envelope.remove();
+                    weddingCard.classList.add("reveal");
+                    bigRosePetalRafId = requestAnimationFrame(bigRosePetalLoop);
+                    return;
+                }
+
+                // Step 1: Ribbon slides up and out
+                ribbonWrapper.classList.add("slide-out");
+                
+                // Start big rose petal animation
+                bigRosePetalRafId = requestAnimationFrame(bigRosePetalLoop);
+
+                // Step 2: Envelope disappears and card reveals
+                setTimeout(() => {
+                    envelope.classList.add("disintegrate");
+                    weddingCard.classList.add("reveal");
+                }, 500);
+
+                // Cleanup
+                setTimeout(() => {
+                    ribbonWrapper.remove();
+                    envelope.remove();
+                }, 1200);
+            }
+
+            // Event listeners
+            envelope.addEventListener("click", openInvitation);
+            envelope.addEventListener("keydown", (event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    openInvitation();
+                }
+            });
+
+            // Initialize
+            redPetalRafId = requestAnimationFrame(redPetalLoop);
+
+            window.addEventListener("beforeunload", () => {
+                cancelAnimationFrame(redPetalRafId);
+            });
+        }());
+    </script>
+</body>
+</html>
