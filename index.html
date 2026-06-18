@@ -588,12 +588,87 @@
         }
 
         /* Responsive adjustments */
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .center-container {
-                max-width: 92vw;
+                max-width: 95vw;
+            }
+            .envelope {
+                height: 300px;
+            }
+            .card {
+                height: 380px;
             }
             .card-inner {
-                padding: 2.3rem 1.7rem 2rem;
+                padding: 2rem 1.5rem 1.8rem;
+            }
+            .names {
+                font-size: clamp(2rem, 6vw, 3rem);
+            }
+            .message {
+                font-size: 0.9rem;
+                line-height: 1.6;
+            }
+            .envelope-initials.n {
+                left: 40px;
+            }
+            .envelope-initials.a {
+                right: 40px;
+            }
+            .envelope-hint {
+                font-size: 0.65rem;
+                letter-spacing: 0.28em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .center-container {
+                max-width: 98vw;
+            }
+            .envelope {
+                height: 260px;
+            }
+            .card {
+                height: 340px;
+            }
+            .card-inner {
+                padding: 1.7rem 1.3rem 1.5rem;
+            }
+            .eyebrow {
+                letter-spacing: 0.3em;
+                font-size: 0.62rem;
+                margin-bottom: 0.8rem;
+            }
+            .names {
+                font-size: clamp(1.8rem, 7vw, 2.5rem);
+            }
+            .message {
+                font-size: 0.85rem;
+                margin: 1rem 0;
+            }
+            .date {
+                font-size: 1rem;
+            }
+            .time-location {
+                font-size: 0.8rem;
+            }
+            .envelope-initials {
+                font-size: clamp(3rem, 9vw, 4.5rem);
+            }
+            .envelope-initials.n {
+                left: 30px;
+            }
+            .envelope-initials.a {
+                right: 30px;
+            }
+            .ribbon-wrapper {
+                width: 35px;
+            }
+            .ribbon-vertical {
+                width: 35px;
+            }
+            .candles-container {
+                height: 45px;
+                gap: 12px;
             }
         }
 
@@ -667,10 +742,12 @@
             let isOpened = false;
             let redPetalRafId = 0;
             let lastRedPetalSpawn = 0;
-            const redPetalSpawnInterval = 75;
-            const redPetalSpawnCount = reducedMotion.matches ? 1 : 2;
+            const redPetalSpawnInterval = 150;
+            const redPetalSpawnCount = reducedMotion.matches ? 1 : 1;
             let bigRosePetalRafId = 0;
             let lastBigRosePetalSpawn = 0;
+            const bigRosePetalSpawnInterval = 120;
+            const bigRosePetalSpawnCount = reducedMotion.matches ? 1 : 1;
 
             // Utility functions
             function randomBetween(min, max) {
@@ -742,8 +819,8 @@
                     lastBigRosePetalSpawn = timestamp;
                 }
 
-                if (timestamp - lastBigRosePetalSpawn >= 60) {
-                    for (let i = 0; i < 3; i++) {
+                if (timestamp - lastBigRosePetalSpawn >= bigRosePetalSpawnInterval) {
+                    for (let i = 0; i < bigRosePetalSpawnCount; i++) {
                         createBigRosePetal();
                     }
                     lastBigRosePetalSpawn = timestamp;
