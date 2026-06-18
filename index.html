@@ -143,19 +143,23 @@
 
         .center-container {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
             width: 100%;
             max-width: 600px;
-            display: grid;
-            place-items: center;
-            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         /* Envelope - simple rectangle */
         .envelope {
-            position: relative;
+            position: absolute;
+            inset: 0;
+            margin: auto;
             width: min(90vw, 520px);
             height: auto;
             aspect-ratio: 52 / 34;
@@ -321,7 +325,9 @@
 
         /* Wedding Card */
         .card {
-            position: relative;
+            position: absolute;
+            inset: 0;
+            margin: auto;
             width: min(95vw, 650px);
             height: auto;
             aspect-ratio: 65 / 42;
@@ -588,7 +594,8 @@
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .center-container {
-                max-width: 95vw;
+                max-width: 100%;
+                width: 100%;
             }
             .card-inner {
                 padding: 2rem 1.5rem 1.8rem;
@@ -614,7 +621,8 @@
 
         @media (max-width: 480px) {
             .center-container {
-                max-width: 98vw;
+                max-width: 100%;
+                width: 100%;
             }
             .card-inner {
                 padding: 1.5rem 1.2rem 1.3rem;
@@ -736,12 +744,12 @@
             let isOpened = false;
             let redPetalRafId = 0;
             let lastRedPetalSpawn = 0;
-            const redPetalSpawnInterval = 180;
+            const redPetalSpawnInterval = 200;
             const redPetalSpawnCount = reducedMotion.matches ? 1 : 1;
             let bigRosePetalRafId = 0;
             let lastBigRosePetalSpawn = 0;
-            const bigRosePetalSpawnInterval = 200;
-            const bigRosePetalSpawnCount = reducedMotion.matches ? 1 : 1;
+            const bigRosePetalSpawnInterval = 300; // Less frequent spawning
+            const bigRosePetalSpawnCount = reducedMotion.matches ? 1 : 1; // Only one petal at a time
 
             // Utility functions
             function randomBetween(min, max) {
@@ -791,10 +799,10 @@
                 petal.className = "big-rose-petal";
 
                 const size = randomBetween(45, 75);
-                const duration = randomBetween(3.5, 6.5);
-                const drift = randomBetween(-35, 35) + "vw";
-                const spin = randomBetween(420, 1200) + "deg";
-                const tilt = randomBetween(220, 860) + "deg";
+                const duration = randomBetween(7, 12); // Slower fall
+                const drift = randomBetween(-15, 15) + "vw"; // Less horizontal drift
+                const spin = randomBetween(200, 600) + "deg"; // Less spin
+                const tilt = randomBetween(100, 400) + "deg"; // Less tilt
                 const left = randomBetween(-10, 110) + "vw";
 
                 petal.style.setProperty("--size", size + "px");
